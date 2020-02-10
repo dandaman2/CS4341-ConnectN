@@ -15,8 +15,8 @@ class AlphaBetaAgent(agent.Agent):
     def __init__(self, name, max_depth):
         super().__init__(name)
         # Max search depth
-        self.max_depth = 4#max_depth
-        self.weights = [0,10,50,5000,1000000]
+        self.max_depth = max_depth
+        self.weights = [0, 10, 50, 5000, 1000000] #the weight table to process board state evaluations
 
     # Pick a column.
     #
