@@ -69,7 +69,7 @@ class AlphaBetaAgent(agent.Agent):
             val = (-math.inf, -1)  # best value
             for state, action in self.get_successors(board_state):
                 new_val = self.__minimize(state, depth+1, alpha, beta)
-                print("New Val is", new_val)
+                #print("New Val is", new_val)
                 if new_val >= val[0]:
                     val = new_val, action
 
