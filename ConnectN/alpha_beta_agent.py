@@ -29,13 +29,12 @@ class AlphaBetaAgent(agent.Agent):
         """Search for the best move (choice of column for the token)"""
         # Your code here
         # print("[[-----------------GO-----------------------]]")
-        depth = -self.max_depth # start with negative depth. Once depth is 0, then return board states as terminal nodes
+        depth = -self.max_depth  # start with negative depth. Once depth is 0, then return board states as terminal node
         alpha = -math.inf
         beta = math.inf
 
         weight_len = len(self.weights)
         if brd.n > weight_len-1:  # add additional weight heuristics for larger n
-            print()
             for i in range(weight_len, brd.n+1):
                 self.weights.append(1000*max(self.weights))
 
@@ -58,14 +57,12 @@ class AlphaBetaAgent(agent.Agent):
                 return True, action
         return False, -1
 
-    # Returns the max value, and its associated action with pruning
+    # Returns the max value, and its associated action with pruning (from lecture)
     def __maximize(self, board_state, depth, alpha, beta):
         win_state = board_state.get_outcome()
         if win_state == board_state.player:
             return math.inf, -1
         elif win_state != 0:  # opponent wins
-            # print("LOSS STATE FOUND")
-            # board_state.print_it()
             return -math.inf, -1
         if len(board_state.free_cols()) == 0:
             return 0, -1
@@ -88,7 +85,7 @@ class AlphaBetaAgent(agent.Agent):
 
         return val
 
-    # Returns the min value, and its associated action with pruning
+    # Returns the min value, and its associated action with pruning (from lecture)
     def __minimize(self, board_state, depth, alpha, beta):
         win_state = board_state.get_outcome()
         if win_state == board_state.player:
@@ -116,18 +113,15 @@ class AlphaBetaAgent(agent.Agent):
 
     # the utility function which evaluates the overall gain/loss from a particular board state
     def __evaluate_score(self, board_state, player):
-        #print("----SS----")
-        #board_state.print_it()
-        #print("----EE------\n")
-        player_scores = [0, 0]  # initialize with 0, 0 scores
-        for dx, dy in [(1, 0), (1, 1), (0, 1), (1, -1)]:
+        player_scores = [0, 0]  # initialize with 0, 0 scores for the two players
+        for dx, dy in [(1, 0), (1, 1), (0, 1), (1, -1)]:  # iterate through all directions
             for i in range(board_state.h):
-                for j in range(board_state.w):
+                for j in range(board_state.w):  # check all board spots
                     cur_token = board_state.board[i][j]
                     num_inarow = 1 if cur_token == player else 0 #!=0
                     next_i = i
                     next_j = j
-                    for step in range(board_state.n):
+                    for step in range(board_state.n):  # counter for how many of a given token are in a row
                         next_i += dx
                         next_j += dy
                         # out of bounds check
@@ -140,7 +134,7 @@ class AlphaBetaAgent(agent.Agent):
                             cur_token = next_token
                             num_inarow = 1
                         elif cur_token != next_token:
-                            if next_token == 0:  # if subsequent empty cells, advance check to next position
+                            if next_token == 0:  # if next cell is empty, advance check to next position
                                 continue
                             # Different player tokens in a row, num_inarow has thus ended prematurely
                             num_inarow = 0
@@ -150,7 +144,7 @@ class AlphaBetaAgent(agent.Agent):
                                 num_inarow += 1
                     # add to score based on number of consecutive tokens and weight heuristic
                     player_scores[cur_token-1] += self.weights[num_inarow]
-        # score is difference in board state value
+        # score is difference in board state value (with defensiveness included)
         score_diff = (1-self.defensiveness)*player_scores[0] - self.defensiveness*player_scores[1]
         return score_diff if player == 1 else -1*score_diff
 
