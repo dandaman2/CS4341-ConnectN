@@ -16,7 +16,8 @@ class AlphaBetaAgent(agent.Agent):
         super().__init__(name)
         # Max search depth
         self.max_depth = max_depth
-        self.weights = [0, 10, 50, 5000, 1000000] #the weight table to process board state evaluations
+        self.weights = [0, 10, 50, 5000, 1000000, 1000000000]  # the weight table to process board state evaluations
+        self.defensiveness = .65
 
     # Pick a column.
     #
@@ -27,14 +28,22 @@ class AlphaBetaAgent(agent.Agent):
     def go(self, brd):
         """Search for the best move (choice of column for the token)"""
         # Your code here
-        print("[[-----------------GO-----------------------]]")
+        # print("[[-----------------GO-----------------------]]")
         depth = -self.max_depth
         alpha = -math.inf
         beta = math.inf
+
+        weight_len = len(self.weights)
+        if brd.n > weight_len-1:  # add additional weight heuristics for larger n
+            print()
+            for i in range(weight_len, brd.n+1):
+                self.weights.append(1000*max(self.weights))
+
+        # print(self.weights)
         # check to see if AI can win next move
-        oneAway = self.isOneAway(brd)
-        if oneAway[0]:
-            return oneAway[1]
+        one_away_res = self.__one_away(brd)
+        if one_away_res[0]:
+            return one_away_res[1]
         # AI seeks to maximize. Start with -inf and inf bounds initially
         utility, action = self.__maximize(brd, depth, alpha, beta)
         if action < 0 or action > brd.h:
@@ -43,7 +52,7 @@ class AlphaBetaAgent(agent.Agent):
         return action
 
     # returns a boolean and an action (tuple) if the AI can win next turn
-    def isOneAway(self, board_state):
+    def __one_away(self, board_state):
         for state, action in self.get_successors(board_state):
             if state.get_outcome() == board_state.player:
                 return True, action
@@ -127,7 +136,6 @@ class AlphaBetaAgent(agent.Agent):
                         if next_i >= board_state.h or next_i < 0 or next_j >= board_state.w or next_j < 0:
                             num_inarow = 0
                             break
-
                         next_token = board_state.board[next_i][next_j]
                         if cur_token == 0 and next_token > 0:
                             # reset num_inarow if new non-empty spot found
@@ -135,7 +143,6 @@ class AlphaBetaAgent(agent.Agent):
                             num_inarow = 1
                         elif cur_token != next_token:
                             if next_token == 0:  # if subsequent empty cells, advance check to next position
-                                # print("CONTINUEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
                                 continue
                             # Different player tokens in a row, num_inarow has thus ended prematurely
                             num_inarow = 0
@@ -143,8 +150,10 @@ class AlphaBetaAgent(agent.Agent):
                         else:
                             if cur_token > 0:
                                 num_inarow += 1
-                    player_scores[cur_token-1] += self.weights[num_inarow]  # set score equal to highest sequence
-        score_diff = .35*player_scores[0] - .65*player_scores[1]  # score is difference in board state value
+                    # add to score based on number of consecutive tokens and weight heuristic
+                    player_scores[cur_token-1] += self.weights[num_inarow]
+        # score is difference in board state value
+        score_diff = (1-self.defensiveness)*player_scores[0] - self.defensiveness*player_scores[1]
         return score_diff if player == 1 else -1*score_diff
 
     # def __evaluate_score2(self, board_state, player):
