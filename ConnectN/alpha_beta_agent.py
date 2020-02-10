@@ -17,7 +17,7 @@ class AlphaBetaAgent(agent.Agent):
         # Max search depth
         self.max_depth = max_depth
         self.weights = [0, 10, 50, 5000, 1000000, 1000000000]  # the weight table to process board state evaluations
-        self.defensiveness = .65
+        self.defensiveness = .65  # a heuristic modifier that makes the bot prefer defensive play over offensive play
 
     # Pick a column.
     #
@@ -29,7 +29,7 @@ class AlphaBetaAgent(agent.Agent):
         """Search for the best move (choice of column for the token)"""
         # Your code here
         # print("[[-----------------GO-----------------------]]")
-        depth = -self.max_depth
+        depth = -self.max_depth # start with negative depth. Once depth is 0, then return board states as terminal nodes
         alpha = -math.inf
         beta = math.inf
 
@@ -43,7 +43,7 @@ class AlphaBetaAgent(agent.Agent):
         # check to see if AI can win next move
         one_away_res = self.__one_away(brd)
         if one_away_res[0]:
-            return one_away_res[1]
+            return one_away_res[1]  # if it can win in one particular action, return that action
         # AI seeks to maximize. Start with -inf and inf bounds initially
         utility, action = self.__maximize(brd, depth, alpha, beta)
         if action < 0 or action > brd.h:
@@ -69,9 +69,8 @@ class AlphaBetaAgent(agent.Agent):
             return -math.inf, -1
         if len(board_state.free_cols()) == 0:
             return 0, -1
-        if depth >= 0:
+        if depth >= 0:  # depth reached, return value as terminal node
             next_player = board_state.player
-            #next_player = 1 if board_state.player == 2 else 2
             utility = self.__evaluate_score(board_state, next_player)
             return utility, -1
         else:
@@ -98,9 +97,8 @@ class AlphaBetaAgent(agent.Agent):
             return math.inf
         if len(board_state.free_cols()) == 0:
             return 0
-        if depth >= 0:
+        if depth >= 0:  # depth reached, return value as terminal node
             next_player = board_state.player
-            #next_player = 1 if board_state.player == 2 else 2
             utility = self.__evaluate_score(board_state, next_player)
             return utility
         else:
@@ -156,57 +154,6 @@ class AlphaBetaAgent(agent.Agent):
         score_diff = (1-self.defensiveness)*player_scores[0] - self.defensiveness*player_scores[1]
         return score_diff if player == 1 else -1*score_diff
 
-    # def __evaluate_score2(self, board_state, player):
-    #     player_score = self.__evaluate_player_score(board_state, player)
-    #     if player == 1:
-    #         opponent_score = self.__evaluate_player_score(board_state, 2)
-    #     else:
-    #         opponent_score = self.__evaluate_player_score(board_state, 1)
-    #     return player_score - opponent_score
-    #
-    # # with a given board state a player, calculates a score rating
-    # def __evaluate_player_score(self, board_state, player):
-    #     score = 0
-    #     for i in range(board_state.h):
-    #         # print('i is', i, 'out of', board_state.h-1)
-    #         for j in range(board_state.w):
-    #             # cur_token = board_state.board[i][j]
-    #             for n in range(2, board_state.n):
-    #              if (self.isNat(n, player, board_state.board, i, j, 1, 0) or
-    #                 self.isNat(n, player, board_state.board, i, j, 0, 1) or
-    #                 self.isNat(n, player, board_state.board, i, j, 1, 1) or
-    #                 self.isNat(n, player, board_state.board, i, j, 1, -1)):
-    #                     score += 1000*n
-    #     return score
-    #
-    # def isNat(self, num, player, board, x, y, dx, dy):
-    #     """Return True if a line of identical tokens exists starting at (x,y)
-    #        in direction (dx,dy)"""
-    #     # print("----position(" +str(x)+','+str(y)+')')
-    #     # try and catch used for falsifying checks outside the board range
-    #     try:
-    #         key = player
-    #         for _ in range(num):
-    #             # print('check spot' + str(x) + ',' + str(y))
-    #             if board[y][x] == key and x >=0 and y>=0:
-    #                 x += dx
-    #                 y += dy
-    #             else:
-    #                 return False
-    #         return True
-    #
-    #     except IndexError:
-    #         return False
-    #
-
-
-
-    # Get the successors of the given board.
-    #
-    # PARAM [board.Board] brd: the board state
-    # RETURN [list of (board.Board, int)]: a list of the successor boards,
-    #                                      along with the column where the last
-    #                                      token was added in it
     def get_successors(self, brd):
         """Returns the reachable boards from the given board brd. The return value is a tuple (new board state, column number where last token was added)."""
         # Get possible actions
