@@ -225,3 +225,6 @@ class AlphaBetaAgent(agent.Agent):
             # Add board to list of successors
             succ.append((nb,col))
         return succ
+
+
+THE_AGENT = AlphaBetaAgent("DuffDaniel", 4)
