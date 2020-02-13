@@ -12,6 +12,10 @@ Alpha-Beta Pruning:
 Minimize and Maximize Functions:
 The board evaluation function is nested within the ``maximize`` and ``minimize`` functions of the min-max alpha-beta algorithm provided by the lecture. Initially, the agent seeks to maximize the score of a particular board state (as determined by the evaluation function), and then anticipate a minimization of the next noard state. 
 
+Testing Agents:
+	The different agents were tested by running several different games of a basic game of Connect 4 with each combination of agents playing against each other. This way it could be tested if all of the agents actually worked properly and could win a game without performing an illegal move (such as placing a token in an illegal column) or breaking the program. Once all of the agents were tested for simple functionality, the number of rows, columns, and tokens in a row were changed and then tested. Since the game needs to be connect N with any possible number as N, it was important to make sure that the agents could work with any number of tokens to win. After a dynamic board was tested, the alpha-beta agent was tested. In order to ensure that this agent was as efficient as possible, it had to be tested many times to try to find the best possible AI to win games of connect N. This was tested by using trial and error and adjusting the different weight values DAN. An important finding from the testing of this agent was that sometimes the agent would be looking too far ahead and would make a move for the future when it could just win immediately. A big change that was made to solve this problem was by adding a method that checks if the AI is one token away from a win and then make that move if it existed.
+
+
 Agent Heuristics:
 -Our Connect-N A.I. utilizes heuristics which add weights to board evaluations, as well as multipliers for those evaluations. 
 The weight heursistc takes the number of consecutive tokens used by the agent, and uses that number as a reference for which predetermined weight value should be used. The weight table is listed below.
