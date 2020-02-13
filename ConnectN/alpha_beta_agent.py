@@ -168,4 +168,4 @@ class AlphaBetaAgent(agent.Agent):
         return succ
 
 
-THE_AGENT = AlphaBetaAgent("DuffDaniel", 4)
+THE_AGENT = AlphaBetaAgent("Group08", 4)
