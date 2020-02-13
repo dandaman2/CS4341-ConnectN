@@ -49,3 +49,5 @@ This differential value is then returned to the calling min/max function as a te
 
 ## Improvements to the Agent
 If we had more time to work on the agent, we would likely have more time to fine-tune the heuristic score weights and defensiveness multiplier. This could potentially be done via a genetic algorithm, wherein different varieties of defensiveness and score weights could be tested and modified to become more advantageous throughout mulitple tournaments. The heuristic values would likely be the genes in such an algorithm, and a crossover would take the two most-effective (highest win rate) agents, and produce a hybrid combination consisting of some of both parent's genotypes. 
+
+In addition, the depth of the minimax search could be based on the number of turns, thus implementing a depth heuristic; increasing the search as the game progresses (and possible board configurations become fewer).
