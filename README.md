@@ -4,21 +4,12 @@ Connect-N AlphaBeta Minimax search
 Blake Dobay, Dan Duff, Andrew Levy
 
 Introduction:
-	The goal of this project is to create an AI agent for the game connect N. Connect N is a more generalized version of the game connect 4 where each player places a tile in a column; stacking on the earlier pieces. A player wins when they stack 4 pieces in vertical or diagonal configurations. The AI uses alpha beta pruning and is limited to fifteen seconds per turn. 
+-The goal of this project is to create an AI agent for the game connect N. Connect N is a more generalized version of the game connect 4 where each player places a tile in a column; stacking on the earlier pieces. A player wins when they stack 4 pieces in vertical or diagonal configurations. The AI uses alpha beta pruning and is limited to fifteen seconds per turn. 
 
 Agent Heuristics:
-	Our groups A.I. agent has multiple heuristics that assist it. One of the simplest heuristics is to check whether or not the AI is one turn away from winning. This heuristic ensures that the AI wins when it can instead of playing extra moves that does not win it the game. To do this the program loops through each of the next board states and if any of them result in an AI win then it returns the move. The code for this heuristic is shown below. 
+	Our Connect-N A.I. utilizes heuristics which 
 
-
-
-	
-
-
-
-
-
-
-Another heuristic that was added to the AI is named defensiveness. Defensiveness is a weight that leads the AI to play more defensive mover instead of being more aggressive. This weight can be adjusted before it is used in evaluating a move (as shown in the code below).
+	Another heuristic that was added to the AI is named defensiveness. Defensiveness is a weight that leads the AI to play more 	defensive mover instead of being more aggressive. This weight can be adjusted before it is used in evaluating a move (as shown in the code below).
 
 As seen in the code above the defensiveness weight is multiplied by the score of the move.
 
