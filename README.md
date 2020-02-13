@@ -9,6 +9,9 @@ Introduction:
 Alpha-Beta Pruning:
 -Alpha–beta pruning is a search algorithm that seeks to decrease the number of nodes that are evaluated by the minimax algorithm in its search tree. This particular bot seeks to maximize it's score through iterative maximizing and minimizing of player score, predicting up to 4 moves ahead of any one given board state. In evaluating these states, may can be "pruned" preemptively; a process which short-circuits evaluations of states which cannot possibly result in a value better than the current minimum or maximum. An example of this would be the evaluation of a board state which consists of an opponent win state (a scenario which doesn't need to be eavlauted any further, as the main player will lose no matter what the rest of the board contains). 
 
+Minimize and Maximize Functions:
+The board evaluation function is nested within the ``maximize`` and ``minimize`` functions of the min-max alpha-beta algorithm provided by the lecture. Initially, the agent seeks to maximize the score of a particular board state (as determined by the evaluation function), and then anticipate a minimization of the next noard state. 
+
 Agent Heuristics:
 -Our Connect-N A.I. utilizes heuristics which add weights to board evaluations, as well as multipliers for those evaluations. 
 The weight heursistc takes the number of consecutive tokens used by the agent, and uses that number as a reference for which predetermined weight value should be used. The weight table is listed below.
