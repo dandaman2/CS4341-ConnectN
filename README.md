@@ -1,7 +1,7 @@
 # CS4341-Project 1
 
 Connect-N AlphaBeta Minimax search
-Blake Dobay, Dan Duff, Andrew Levy
+Blake Dobay (bdobay), Dan Duff (dfduff), Andrew Levy (amlevy)
 
 ## Introduction:
 -The goal of this project is to create an AI agent for the game connect N. Connect N is a more generalized version of the game connect 4 where each player places a tile in a column; stacking on the earlier pieces. A player wins when they stack 4 pieces in vertical or diagonal configurations. The AI uses alpha beta pruning and is limited to fifteen seconds per turn. 
