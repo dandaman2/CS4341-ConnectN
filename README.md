@@ -14,23 +14,23 @@ The board evaluation function is nested within the ``maximize`` and ``minimize``
 
 + If the given state has the player winning: return ```math.inf``` if maximizing, ```-math.inf``` if minimizing
 + If the given state has the player losing: return ```-math.inf``` if maximizing, ```math.inf``` if minimizing 
-+ If the depth has been reached, evaluate the board by summing the board's state of all 1-N "in-a-row" secquences of the player and the opponent's tokens. They are valued more highly depending on the heuristic weights, and are altered by defensiveness, however ultimately the score that is returned is the difference between the opponent's and the player's token sequence evaluation. 
++ If the depth has been reached, evaluate the board by summing the board's state of all 1-N "in-a-row" sequences of the player and the opponent's tokens. They are valued more highly depending on the heuristic weights, and are altered by defensiveness, however ultimately the score that is returned is the difference between the opponent's and the player's token sequence evaluation. 
 
 ## Testing Agents:
-The different versions of agents were tested by running several different games of basic Connect 4, with different variations of the alpha-beta agent playing against itself, <i>random-player</i> and peronsalized <i>human-player</i> testing. Initially, the agent was geared towards basic functionality and could complete a game without performing an illegal move (such as placing a token in an illegal column) or breaking the program. Once all of the agent variants were tested for simple functionality, the number of rows, columns, and tokens in a row were changed and then tested. Since the game needs to be connect N with any possible number as N, it was important to make sure that the agents could work with any number of tokens to win. After a dynamic board was tested, the alpha-beta agent was tested. In order to ensure that this agent was as efficient as possible, it had to be tested many times to try to find the best possible AI to win games of connect N. This process included fine-tuning search depth and heursitic modifiers over many trial games. This was tested by using trial-and-error methods, which resulted in exponeitally-increasing weight values and larger defense (versus offense) values. These larger values resulted in more logical decision-making; priotizing longer sequences of consecutive tokens over multiple instances of smaller sequences, as well as focusing on reducing opponent score over increasing the player's self-score. 
+The different versions of agents were tested by running several different games of basic Connect 4, with different variations of the alpha-beta agent playing against itself, <i>random-player</i> and personalized <i>human-player</i> testing. Initially, the agent was geared towards basic functionality and could complete a game without performing an illegal move (such as placing a token in an illegal column) or breaking the program. Once all of the agent variants were tested for simple functionality, the number of rows, columns, and tokens in a row were changed and then tested. Since the game needs to be connect N with any possible number as N, it was important to make sure that the agents could work with any number of tokens to win. After a dynamic board was tested, the alpha-beta agent was tested. In order to ensure that this agent was as efficient as possible, it had to be tested many times to try to find the best possible AI to win games of connect N. This process included fine-tuning search depth and heursitic modifiers over many trial games. This was tested by using trial-and-error methods, which resulted in exponeitally-increasing weight values and larger defense (versus offense) values. These larger values resulted in more logical decision-making; priotizing longer sequences of consecutive tokens over multiple instances of smaller sequences, as well as focusing on reducing opponent score over increasing the player's self-score. 
 
 Another important finding from the testing of this agent was that sometimes the agent would be looking too far ahead and would make a move for the future when it could just win immediately. A big change that was made to solve this problem was by adding a method that checks if the AI is one token away from a win and then make that move if it existed.
 	
-Finally, defensiveness was also tested via trial-and-error, however it seemed necessary to implement so as to have the A.I. consider the opponent's moves more heavily. This would prevent the A.I. from being too overconfident, and force it to select moves which determent the opponent's score moreso than increase it's own; essentially prioritizing surivial over aggressiveness. 
+Finally, defensiveness was also tested via trial-and-error, however it seemed necessary to implement so as to have the A.I. consider the opponent's moves more heavily. This would prevent the A.I. from being too overconfident, and force it to select moves which determent the opponent's score moreso than increase it's own; essentially prioritizing survival over aggressiveness. 
 
 
 ## Agent Heuristics:
 -Our Connect-N A.I. utilizes heuristics which add weights to board evaluations, as well as multipliers for those evaluations. 
-The weight heursistc takes the number of consecutive tokens used by the agent, and uses that number as a reference for which predetermined weight value should be used. The weight table is listed below.
+The weight heuristic takes the number of consecutive tokens used by the agent, and uses that number as a reference for which predetermined weight value should be used. The weight table is listed below.
 
 ```self.weights = [0, 10, 50, 5000, 1000000, 1000000000]```
 
-For example, if a particular board configuration has 3 consecutive player tokens, that board state would we evaluated at 5000. With this heuristic implemented, the value of board states scale almost exponentially, leading to 3-in-a-rows being valued much higher than 5 instances of 2-in-a-row. This ensures that the agent will always value longer sequences more than mulitple instances of shorter sequences. 
+For example, if a particular board configuration has 3 consecutive player tokens, that board state would we evaluated at 5000. With this heuristic implemented, the value of board states scale almost exponentially, leading to 3-in-a-rows being valued much higher than 5 instances of 2-in-a-row. This ensures that the agent will always value longer sequences more than multiple instances of shorter sequences. 
 
 If the N input of the game is larger than the size of the weight array, then additional values will be added to the list of weights (with new values being multiplied by 1000 for each additional weight added). All of these values were determined via crude trial-and-error testing. 
 
@@ -43,8 +43,8 @@ As a result, the overall score of a board state is determined by the following c
 
 ```score_diff = (1-self.defensiveness)*player_scores[0] - self.defensiveness*player_scores[1]```
 
-This takes the difference of the two player's scores on the baord state, factoring in weights and defense heuristics. 
-This differential value is then retruned to the calling min/max function as a terminal node value. 
+This takes the difference of the two player's scores on the board state, factoring in weights and defense heuristics. 
+This differential value is then returned to the calling min/max function as a terminal node value. 
 
 
 ## Improvements to the Agent
