@@ -10,7 +10,19 @@ Agent Heuristics:
 Our Connect-N A.I. utilizes heuristics which add weights to board evaluations, as well as multipliers for those evaluations. 
 The weight heursistc takes the number of consecutive tokens used by the agent, and uses that number as a reference for which predetermined weight value should be used. The weight table is listed below.
 
-``self.weights = [0, 10, 50, 5000, 1000000, 1000000000]``
-For example, if a particular 
-	
-	The last heuristic in the AI is based around the number of consecutive tokens in a row. This heuristic puts more weight when there are more pieces in a row. This allows to AI to play towards higher number of pieces. This is done using a for loop and a counter. The for loop goes through each of the spaces on the board and checks if the current piece is the same as any of the other adjacent pieces. If it is then it increases the in a row counter. 
+`self.weights = [0, 10, 50, 5000, 1000000, 1000000000]`
+
+For example, if a particular board configuration has 3 consecutive player tokens, that board state would we evaluated at 5000. With this heuristic implemented, the value of board states scale almost exponentially, leading to 3-in-a-rows being valued much higher than 5 instances of 2-in-a-row. This ensures that the agent will always value longer sequences more than mulitple instances of shorter sequences. 
+If the N input of the game is larger than the size of the weight array, then additional values will be added to the list of weights (with new values being multiplied by 1000 for each additional weight added). All of these values were determined via crude trial-and-error testing. 
+
+In addition to weight values affecting board state evaluations, an additional overall multiplier called *defensiveness* effects all board states. This multiplier increases the opponent's score on a board state, ultimately causing the A.I. to select moves which deterement opponents moreso than themselves.
+
+`self.defensiveness = .65`
+
+Similar to the list of weights, the *defensiveness* number was obtained through numerous trial-and-error testing. 
+As a result, the overall score of a board state is determined by the following code segment:
+
+`score_diff = (1-self.defensiveness)*player_scores[0] - self.defensiveness*player_scores[1]`
+
+This takes the difference of the two player's scores on the baord state, factoring in weights and defense heuristics. 
+This differential value is then retruned to the calling min/max function as a terminal node value. 
