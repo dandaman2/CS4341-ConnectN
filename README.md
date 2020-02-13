@@ -6,6 +6,9 @@ Blake Dobay, Dan Duff, Andrew Levy
 Introduction:
 -The goal of this project is to create an AI agent for the game connect N. Connect N is a more generalized version of the game connect 4 where each player places a tile in a column; stacking on the earlier pieces. A player wins when they stack 4 pieces in vertical or diagonal configurations. The AI uses alpha beta pruning and is limited to fifteen seconds per turn. 
 
+Alpha-Beta Pruning:
+Alpha–beta pruning is a search algorithm that seeks to decrease the number of nodes that are evaluated by the minimax algorithm in its search tree. This particular bot seeks to maximize it's score through iterative maximizing and minimizing of player score, predicting up to 4 moves ahead of any one given board state. In evaluating these states, may can be "pruned" preemptively; a process which short-circuits evaluations of states which cannot possibly result in a value better than the current minimum or maximum. An example of this would be the evaluation of a board state which consists of an opponent win state (a scenario which doesn't need to be eavlauted any further, as the main player will lose no matter what the rest of the board contains). 
+
 Agent Heuristics:
 Our Connect-N A.I. utilizes heuristics which add weights to board evaluations, as well as multipliers for those evaluations. 
 The weight heursistc takes the number of consecutive tokens used by the agent, and uses that number as a reference for which predetermined weight value should be used. The weight table is listed below.
